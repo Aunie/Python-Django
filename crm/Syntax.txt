@@ -1,0 +1,29 @@
+from accounts.models import *
+customers = Customer.objects.all()
+print(customers)
+
+print(customers.first())
+print(customers.last())
+
+customer1 = Customer.objects.get(name="Peter Piper")
+print(customer1.email)
+
+customer1 = Customer.objects.get(id=2)
+print(customer1)
+
+order = customer1.order_set.all()
+print(order)
+
+
+order = Order.objects.first()
+print(order.customer.name)
+print(order.customer.phone)
+products = Product.objects.filter()
+print(products)
+products = Product.objects.filter(category="Outdoor")
+
+products = Product.objects.all().order_by('id)
+products = Product.objects.all().order_by('-id)
+
+products = Product.objects.filter(tags__name="Sports")
+print(products)
