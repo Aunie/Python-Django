@@ -1,4 +1,12 @@
 {% load static %}
+
+<style>
+  .hello-msg{
+    font-size: 18px;
+    color: black;
+    margin-right: 20px
+  }
+</style>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <img src="{% static "img/download.png" %}" height="50px" width="50px">
     <div class="container-fluid">
@@ -21,10 +29,10 @@
           
           
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+
       </div>
     </div>
+
+    <span class="hello-msg">Hello,{{request.user}}</span>
+    <span ><a class="hello-msg" href="{% url "logout" %}"> Logout</a></span>
   </nav>
