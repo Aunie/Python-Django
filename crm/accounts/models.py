@@ -26,6 +26,10 @@ class Product(models.Model):
     CATEGORY = (
         ('Indoor', 'Indoor'),
         ('Outdoor', 'Outdoor'),
+        ('Mobile', 'Mobile'),
+        ('Stationary', 'Stationary'),
+        ('Animals', 'Animals'),
+        ('Grocery', 'Grocery'),
     )
     name = models.CharField(max_length=200, null=True)
     price = models.FloatField(null=True)
@@ -45,7 +49,7 @@ class Order(models.Model):
         ('Delivered', 'Delivered'),
     )
     customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE, related_name="orders")
-    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="products")
     status = models.CharField(max_length=200, null=True, choices=STATUS)
     note = models.CharField(max_length=1000, null=True)
     date_created = models.DateTimeField(auto_now_add=True , null=True)

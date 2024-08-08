@@ -6,20 +6,29 @@
 
 
 {% block content %}
-<h1 class="text-center">Product Page</h1><br><br>
+<br><br>
 <div class="container">
   <div class="row">
     <div class="col-md">
         <div class="card card-body">
-            <h5 class="text-center">PRODUCTS</h5>
+            <h3 class="text-center">PRODUCTS</h3>
         </div>
             <div class="card card-body">
-              <table class="table">
-                <tr>
-                  <th>Products</th>
+              <table class="table table-bordered table-striped">
+                <tr class="text-center">
+                  <th></th>
+                  <th>Product Name</th>
                   <th>Category</th>
-                  <th>Price</th>
+                  <th>Price (PRK)</th>
                 </tr>
+                {% for prod in products %}
+                <tr class="text-center">
+                  <td><td><a href="{% url "product_details" prod.id %}" class="btn btn-sm btn-info">View</a></td></td>
+                  <td>{{ prod.name}}</td>
+                  <td>{{ prod.category}}</td>
+                  <td><b>{{ prod.price}}/-</b></td>
+                </tr>
+                {% endfor %}
               </table>
             </div>
     </div>

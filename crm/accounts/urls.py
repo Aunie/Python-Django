@@ -12,6 +12,7 @@ urlpatterns = [
     # path("update_customer/<pk>", views.UpdateCustomer.as_view(), name="update_customer"),
     # path("delete_customer/<pk>", views.DeleteCustomer.as_view(), name="delete_customer"),
     path("products/", views.products, name="products"),
+    path("product_details/<pk>", views.product_details, name="product_details"),
     path("user/", views.UserPage, name="user_page"),
     path("customers/<str:pk_test>/", views.customer, name="customers"),
     path("create_order/<str:pk>", views.createOrder, name="create_order"),

@@ -14,6 +14,7 @@ from django.views import View
 from django.views.generic import View,ListView , DetailView, CreateView, DeleteView, UpdateView, RedirectView,TemplateView,FormView
 from django.urls import reverse,reverse_lazy
 from .decorators import *
+import math
 # Create your views here.
 
 
@@ -132,13 +133,29 @@ def UserPage(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def products(request):
-    return render(request, 'accounts/products.html')
+    products = Product.objects.all()
+    for product in products:
+        product.price = math.ceil(product.price)
+
+    context = {'products':products}
+    return render(request, 'accounts/products.html',context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def product_details(request,pk):
+    prod = Product.objects.get(id=pk)
+    orders_count = Order.objects.filter(product=prod).count()
+    orders_delivered = Order.objects.filter(product=prod, status="Delivered").count()
+    orders_pending = Order.objects.filter(product=prod, status="Pending").count()
+
+    context = {'orders_count':orders_count, 'orders_delivered':orders_delivered,'orders_pending':orders_pending}
+    return render(request, 'accounts/product_details.html',context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def customer(request, pk_test):
     customer = Customer.objects.get(id=pk_test)
-    orders = customer.order_set.all()
+    orders = customer.orders.all()
     orders_count = orders.count()
 
     myFilter = OrderFilter(request.GET, queryset=orders)
