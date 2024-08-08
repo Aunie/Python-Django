@@ -1,0 +1,22 @@
+<!-- accounts/index_class.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer and Order List</title>
+</head>
+<body>
+    <h1>Customers</h1>
+    <ul>
+        {% for customer in object_list %}
+            <li>{{ customer.name }} <!-- Adjust this according to your Customer model fields --></li>
+        {% endfor %}
+    </ul>
+
+    <h1>Orders</h1>
+    <ul>
+        {% for order in orders %}
+            <li>{{ order.product.name }} <!-- Adjust this according to your Order model fields --></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

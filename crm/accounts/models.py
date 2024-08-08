@@ -1,7 +1,10 @@
 from django.db import models
+from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Customer(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     phone = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200, null=True)
@@ -9,6 +12,10 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_absolute_url(self):
+        return reverse("customer_details", kwargs={'pk':self.pk})
+    
 
 class Tag(models.Model):
     name = models.CharField(max_length=200, null=True)
@@ -37,7 +44,7 @@ class Order(models.Model):
         ('Out of Deliver', 'Out of Deliver'),
         ('Delivered', 'Delivered'),
     )
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE, related_name="orders")
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE)
     status = models.CharField(max_length=200, null=True, choices=STATUS)
     note = models.CharField(max_length=1000, null=True)
