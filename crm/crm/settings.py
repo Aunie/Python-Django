@@ -80,11 +80,14 @@ WSGI_APPLICATION = 'crm.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'DEMO_TEST',  # Changed from 'Name' to 'NAME'
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -134,6 +137,7 @@ STATICFILES_DIRS=[BASE_DIR,"static"]
 # STATICFILES_DIR = [STATIC_DIR,]
 
 # MEDIA
-# MEDIA_DIR = BASE_DIR/'media'
-# MEDIA_ROOT = MEDIA_DIR
-# MEDIA_URL = 'media/'
+
+MEDIA_DIR = BASE_DIR/'static/img'
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = '/img/'

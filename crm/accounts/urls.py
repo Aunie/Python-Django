@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-
+from django.conf.urls.static import static
+from django.conf import settings
 # app_name = "accounts"
 
 urlpatterns = [
@@ -14,6 +15,7 @@ urlpatterns = [
     path("products/", views.products, name="products"),
     path("product_details/<pk>", views.product_details, name="product_details"),
     path("user/", views.UserPage, name="user_page"),
+    path("account/", views.accountSettings, name="account"),
     path("customers/<str:pk_test>/", views.customer, name="customers"),
     path("create_order/<str:pk>", views.createOrder, name="create_order"),
     path("update_order/<str:pk>", views.UpdateOrder, name="update_order"),
@@ -23,3 +25,5 @@ urlpatterns = [
     path("register", views.register_page, name="register"),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from . models import *
 from accounts import models
-from .forms import OrderForm, CreateUserForm
+from .forms import OrderForm, CreateUserForm, CustomerForm
 from django.forms import inlineformset_factory
 from .filters import OrderFilter
 from django.contrib.auth.forms import UserCreationForm
@@ -15,6 +15,7 @@ from django.views.generic import View,ListView , DetailView, CreateView, DeleteV
 from django.urls import reverse,reverse_lazy
 from .decorators import *
 import math
+
 # Create your views here.
 
 
@@ -125,10 +126,22 @@ def UserPage(request):
     orders_count = orders.count()
     orders_delivered = orders.filter(status="Delivered").count()
     orders_pending = orders.filter(status="Pending").count()
-
+    
     # print('ORDERS',orders)
-    context = {'orders': orders, 'orders_count': orders_count,'orders_delivered': orders_delivered, 'orders_pending':orders_pending  }
+    context = {'orders': orders, 'orders_count': orders_count,'orders_delivered': orders_delivered, 'orders_pending':orders_pending}
     return render(request, 'accounts/user.html',context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
+def accountSettings(request):
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+    context = {'form': form}
+    return render(request, 'accounts/accounts_settings.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
@@ -144,11 +157,18 @@ def products(request):
 @allowed_users(allowed_roles=['admin'])
 def product_details(request,pk):
     prod = Product.objects.get(id=pk)
+    prod_orders_count = Order.objects.filter(product=prod).values('customer').distinct().count()
+
     orders_count = Order.objects.filter(product=prod).count()
+    orders_prod = Order.objects.filter(product=prod)
+
     orders_delivered = Order.objects.filter(product=prod, status="Delivered").count()
     orders_pending = Order.objects.filter(product=prod, status="Pending").count()
+    orders_out_of_delivered = Order.objects.filter(product=prod, status="Out of Deliver").count()
 
-    context = {'orders_count':orders_count, 'orders_delivered':orders_delivered,'orders_pending':orders_pending}
+
+    context = {'orders_count':orders_count, 'orders_delivered':orders_delivered,'orders_pending':orders_pending,
+               'prod_orders_count': prod_orders_count, 'orders_prod': orders_prod,'orders_out_of_delivered':orders_out_of_delivered,'prod':prod}
     return render(request, 'accounts/product_details.html',context)
 
 @login_required(login_url='login')

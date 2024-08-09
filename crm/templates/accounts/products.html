@@ -16,14 +16,14 @@
             <div class="card card-body">
               <table class="table table-bordered table-striped">
                 <tr class="text-center">
-                  <th></th>
+                  <th>Action</th>
                   <th>Product Name</th>
                   <th>Category</th>
                   <th>Price (PRK)</th>
                 </tr>
                 {% for prod in products %}
                 <tr class="text-center">
-                  <td><td><a href="{% url "product_details" prod.id %}" class="btn btn-sm btn-info">View</a></td></td>
+                  <td><a href="{% url "product_details" prod.id %}" class="btn btn-sm btn-info">View</a></td>
                   <td>{{ prod.name}}</td>
                   <td>{{ prod.category}}</td>
                   <td><b>{{ prod.price}}/-</b></td>
